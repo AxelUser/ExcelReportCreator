@@ -1,2 +1,2 @@
 # ExcelReportCreator
-Small Library to create Excell-reports from entities 
+Small Library to create Excel-reports from entities 
