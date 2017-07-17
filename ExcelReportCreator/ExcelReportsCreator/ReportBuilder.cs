@@ -1,42 +1,39 @@
-﻿using ExcelReportCreator.Handler.Types;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ExcelReportCreator.Handler
+namespace ExcelReportCreator
 {
-    class CustomReporter
+    class ReportBuilderInternal
     {
         public class CustomReport<T> where T : new()
         {
             /// <summary>
             /// List of column-infos.
             /// </summary>
-            List<Func<T, CustomColumn>> rowCreator; 
+            List<Func<T, ExcelColumn>> _rowsCreator;
 
             /// <summary>
             /// Default header style for columns.
             /// </summary>
-            private CellStyle defHeaderStyle;
+            private CellStyle _defHeaderStyle;
 
             /// <summary>
             /// Default data-cell style for columns.
             /// </summary>
-            private CellStyle defDataCellStyle;
+            private CellStyle _defDataCellStyle;
 
             /// <summary>
             /// Title of report.
             /// </summary>
-            public string ReportTitle { get; set; }
-            
+            public string ReportsTitle { get; set; }
+
             public CustomReport()
             {
-                rowCreator = new List<Func<T, CustomColumn>>();
-                defHeaderStyle = new CellStyle();
-                defDataCellStyle = new CellStyle();
+                _rowsCreator = new List<Func<T, ExcelColumn>>();
+                _defHeaderStyle = new CellStyle();
+                _defDataCellStyle = new CellStyle();
             }
 
             /// <summary>
@@ -44,9 +41,9 @@ namespace ExcelReportCreator.Handler
             /// </summary>
             /// <param name="columnCreator">Data mapping and style.</param>
             /// <returns>Updated reporter.</returns>
-            public CustomReport<T> AddColumn(Func<T, CustomColumn> columnCreator)
+            public CustomReport<T> AddColumn(Func<T, ExcelColumn> columnCreator)
             {
-                rowCreator.Add(columnCreator);
+                _rowsCreator.Add(columnCreator);
                 return this;
             }
 
@@ -57,7 +54,7 @@ namespace ExcelReportCreator.Handler
             /// <returns>Updated reporter.</returns>
             public CustomReport<T> SetDefHeaderStyle(CellStyle headerStyle)
             {
-                defHeaderStyle = headerStyle;
+                _defHeaderStyle = headerStyle;
                 return this;
             }
 
@@ -68,7 +65,7 @@ namespace ExcelReportCreator.Handler
             /// <returns>Updated reporter.</returns>
             public CustomReport<T> SetDefDataCellStyle(CellStyle dataCellStyle)
             {
-                defDataCellStyle = dataCellStyle;
+                _defDataCellStyle = dataCellStyle;
                 return this;
             }
 
@@ -82,16 +79,16 @@ namespace ExcelReportCreator.Handler
                 using (ExcelPackage excellPack = new ExcelPackage())
                 {
                     //TODO нужно обработать случай для пустой коллекции.
-                    var wSheet = excellPack.Workbook.Worksheets.Add(ReportTitle);
+                    var workSheet = excellPack.Workbook.Worksheets.Add(ReportsTitle);
                     T dummy = new T();
-                    List<CustomColumn> columnsInfos = rowCreator.Select(c => c(dummy)).ToList();
+                    List<ExcelColumn> columnsInfos = _rowsCreator.Select(c => c(dummy)).ToList();
 
                     int headerColumnsCount = 0;
                     int headerRowsCount = 0;
                     ComputeHeaderSize(out headerRowsCount, out headerColumnsCount, columnsInfos);
 
-                    CreateTitle(wSheet, ReportTitle, 2, headerColumnsCount);
-                    CreateHeader(wSheet, columnsInfos, 3);
+                    CreateTitle(workSheet, ReportsTitle, 2, headerColumnsCount);
+                    CreateHeader(workSheet, columnsInfos, 3);
 
                     int rowIndex = 4;
                     int dataRowsCount = 0;
@@ -99,8 +96,8 @@ namespace ExcelReportCreator.Handler
                     ComputeRowSize(out dataRowsCount, out dataColumnsCount, columnsInfos);
                     foreach (T item in collection)
                     {
-                        List<CustomColumn> dataForRow = rowCreator.Select(cr => cr(item)).ToList();
-                        CreateRow(wSheet, dataForRow, rowIndex);
+                        List<ExcelColumn> dataForRow = _rowsCreator.Select(cr => cr(item)).ToList();
+                        CreateRow(workSheet, dataForRow, rowIndex);
                         rowIndex += dataRowsCount;
                     }
                     return excellPack.GetAsByteArray();
@@ -130,12 +127,12 @@ namespace ExcelReportCreator.Handler
             /// <param name="wSheet">Current excel-worksheet.</param>
             /// <param name="columns">Column's infos.</param>
             /// <param name="rowIndex">Row to start drawing header section.</param>
-            private void CreateHeader(ExcelWorksheet wSheet, List<CustomColumn> columns, int rowIndex)
+            private void CreateHeader(ExcelWorksheet wSheet, List<ExcelColumn> columns, int rowIndex)
             {
                 for (int i = 0; i < columns.Count; i++)
                 {
-                    CustomColumn column = columns[i];
-                    var hStyle = column.HeaderStyle ?? defHeaderStyle;
+                    ExcelColumn column = columns[i];
+                    var hStyle = column.HeaderStyle ?? _defHeaderStyle;
                     ExcelRange cell = null;
                     if (hStyle.CellsToMergeHorizontally > 1 || hStyle.CellsToMergeUpright > 1)
                     {
@@ -177,12 +174,12 @@ namespace ExcelReportCreator.Handler
             /// <param name="wSheet">Current excel-worksheet.</param>
             /// <param name="dataForRow">Column's infos for current row.</param>
             /// <param name="rowIndex">Row to start drawing section.</param>
-            private void CreateRow(ExcelWorksheet wSheet, List<CustomColumn> dataForRow, int rowIndex)
+            private void CreateRow(ExcelWorksheet wSheet, List<ExcelColumn> dataForRow, int rowIndex)
             {
                 for (int i = 0; i < dataForRow.Count; i++)
                 {
-                    CustomColumn column = dataForRow[i];
-                    var cStyle = column.CellStyle ?? defDataCellStyle;
+                    ExcelColumn column = dataForRow[i];
+                    var cStyle = column.CellStyle ?? _defDataCellStyle;
                     ExcelRange cell = null;
                     if (cStyle.CellsToMergeHorizontally > 1 || cStyle.CellsToMergeUpright > 1)
                     {
@@ -218,13 +215,13 @@ namespace ExcelReportCreator.Handler
             /// <param name="rowsCount">Rows for header.</param>
             /// <param name="columnsCount">Columns for header.</param>
             /// <param name="columnsInfos">Collection of column's infos.</param>
-            private void ComputeHeaderSize(out int rowsCount, out int columnsCount, List<CustomColumn> columnsInfos)
+            private void ComputeHeaderSize(out int rowsCount, out int columnsCount, List<ExcelColumn> columnsInfos)
             {
                 rowsCount = 1;
                 columnsCount = 0;
                 foreach (var info in columnsInfos)
                 {
-                    CellStyle style = info.HeaderStyle ?? defHeaderStyle;
+                    CellStyle style = info.HeaderStyle ?? _defHeaderStyle;
                     if (style.CellsToMergeUpright > rowsCount)
                     {
                         rowsCount = style.CellsToMergeUpright;
@@ -239,13 +236,13 @@ namespace ExcelReportCreator.Handler
             /// <param name="rowsCount">Rows for data.</param>
             /// <param name="columnsCount">Columns for data.</param>
             /// <param name="columnsInfos">Collection of column's infos.</param>
-            private void ComputeRowSize(out int rowsCount, out int columnsCount, List<CustomColumn> columnsInfos)
+            private void ComputeRowSize(out int rowsCount, out int columnsCount, List<ExcelColumn> columnsInfos)
             {
                 rowsCount = 1;
                 columnsCount = 0;
                 foreach (var info in columnsInfos)
                 {
-                    CellStyle style = info.CellStyle ?? defDataCellStyle;
+                    CellStyle style = info.CellStyle ?? _defDataCellStyle;
                     if (style.CellsToMergeUpright > rowsCount)
                     {
                         rowsCount = style.CellsToMergeUpright;
