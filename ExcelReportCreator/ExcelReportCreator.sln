@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelReportsCreator", "ExcelReportsCreator\ExcelReportsCreator.csproj", "{62FEFDCE-558C-4A32-B7A6-65A7223D4A7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelReportsCreator.Tests", "ExcelReportsCreator.Tests\ExcelReportsCreator.Tests.csproj", "{7F0F8886-F0C0-4F2D-B0ED-EE3A17B20EEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{62FEFDCE-558C-4A32-B7A6-65A7223D4A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62FEFDCE-558C-4A32-B7A6-65A7223D4A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62FEFDCE-558C-4A32-B7A6-65A7223D4A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0F8886-F0C0-4F2D-B0ED-EE3A17B20EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0F8886-F0C0-4F2D-B0ED-EE3A17B20EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0F8886-F0C0-4F2D-B0ED-EE3A17B20EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0F8886-F0C0-4F2D-B0ED-EE3A17B20EEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
