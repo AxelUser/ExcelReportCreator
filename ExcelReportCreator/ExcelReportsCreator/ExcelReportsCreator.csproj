@@ -45,9 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CellStyle.cs" />
-    <Compile Include="ExcelColumn.cs" />
+    <Compile Include="ReportColumn.cs" />
     <Compile Include="ReportBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportBuilderInternal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

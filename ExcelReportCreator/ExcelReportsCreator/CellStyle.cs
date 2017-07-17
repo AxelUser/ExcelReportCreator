@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ExcelReportCreator
+namespace ExcelReportsCreator
 {
     public class CellStyle
     {

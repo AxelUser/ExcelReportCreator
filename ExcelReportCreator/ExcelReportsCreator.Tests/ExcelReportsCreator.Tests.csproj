@@ -56,7 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportBuilderContentTests.cs" />
+    <Compile Include="Reports\ReportBuilderContentTests.cs" />
+    <Compile Include="Utils\TestReportEntity.cs" />
+    <Compile Include="Utils\TestUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -66,6 +68,9 @@
       <Project>{62fefdce-558c-4a32-b7a6-65a7223d4a7a}</Project>
       <Name>ExcelReportsCreator</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
