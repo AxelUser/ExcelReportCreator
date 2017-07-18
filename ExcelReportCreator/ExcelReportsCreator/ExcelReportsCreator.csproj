@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CellStyle.cs" />
+    <Compile Include="ReportBuilderException.cs" />
     <Compile Include="ReportColumn.cs" />
     <Compile Include="ReportBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

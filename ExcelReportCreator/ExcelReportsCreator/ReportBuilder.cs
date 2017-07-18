@@ -116,6 +116,11 @@ namespace ExcelReportsCreator
                 return null;
             }
 
+            if(!_rowsCreator.Any())
+            {
+                throw new ReportBuilderException("Report must have at least one column.");
+            }
+
             using (ExcelPackage excellPack = new ExcelPackage())
             {
                 //TODO нужно обработать случай для пустой коллекции.

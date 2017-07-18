@@ -63,5 +63,15 @@ namespace ExcelReportsCreator.Tests.Reports
 
             throw new NotImplementedException();
         }
+
+        [Fact]
+        public void Build_NoColumns_ThrowsReportBuilderException()
+        {
+            var entities = TestUtils.CreateTestReportEntities(10);
+            var builder = ReportBuilder<TestReportEntity>
+                .Create(nameof(Build_AddColumn_ReturnsBinary));
+
+            Assert.Throws<ReportBuilderException>(() => builder.Build(entities));
+        }
     }
 }
