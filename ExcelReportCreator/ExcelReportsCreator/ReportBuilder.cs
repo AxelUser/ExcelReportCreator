@@ -54,20 +54,21 @@ namespace ExcelReportsCreator
         /// </summary>
         public string ReportsTitle { get; set; }
 
-        public ReportBuilder()
+        public ReportBuilder(string title)
         {
             _rowsCreator = new List<Func<T, ReportColumn>>();
             _defHeaderStyle = new CellStyle();
             _defDataCellStyle = new CellStyle();
+            ReportsTitle = title;
         }
 
         /// <summary>
         /// Start creating report.
         /// </summary>
         /// <returns></returns>
-        public static ReportBuilder<T> Create()
+        public static ReportBuilder<T> Create(string title)
         {
-            return new ReportBuilder<T>();
+            return new ReportBuilder<T>(title);
         }
 
         /// <summary>
@@ -110,6 +111,11 @@ namespace ExcelReportsCreator
         /// <returns>Report in binary format.</returns>
         public byte[] Build(IEnumerable<T> collection)
         {
+            if(collection == null || !collection.Any())
+            {
+                return null;
+            }
+
             using (ExcelPackage excellPack = new ExcelPackage())
             {
                 //TODO нужно обработать случай для пустой коллекции.
