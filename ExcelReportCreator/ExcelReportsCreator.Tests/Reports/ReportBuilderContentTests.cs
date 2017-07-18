@@ -56,7 +56,6 @@ namespace ExcelReportsCreator.Tests.Reports
 
         [Theory]
         [InlineData(10)]
-        [InlineData(100000)]
         public void Build_PutCollection_EqualsCount(int count)
         {
             var entities = TestUtils.CreateTestReportEntities(count);
