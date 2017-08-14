@@ -25,29 +25,11 @@ namespace ExcelReportsCreator
         /// <summary>
         /// Template for row generation.
         /// </summary>
-        public List<Func<T, ReportColumn>> RowTemplate
-        {
-            get
-            {
-                return _rowsCreator;
-            }
-        }
+        public List<Func<T, ReportColumn>> RowTemplate => _rowsCreator;
 
-        public CellStyle DefaultHeaderStyle
-        {
-            get
-            {
-                return _defHeaderStyle;
-            }
-        }
+        public CellStyle DefaultHeaderStyle => _defHeaderStyle;
 
-        public CellStyle DefaultDataCellStyle
-        {
-            get
-            {
-                return _defDataCellStyle;
-            }
-        }
+        public CellStyle DefaultDataCellStyle => _defDataCellStyle;
 
         /// <summary>
         /// Title of report.
@@ -123,7 +105,6 @@ namespace ExcelReportsCreator
 
             using (ExcelPackage excellPack = new ExcelPackage())
             {
-                //TODO нужно обработать случай для пустой коллекции.
                 var workSheet = excellPack.Workbook.Worksheets.Add(ReportsTitle);
                 T dummy = new T();
                 List<ReportColumn> columnsInfos = _rowsCreator.Select(c => c(dummy)).ToList();

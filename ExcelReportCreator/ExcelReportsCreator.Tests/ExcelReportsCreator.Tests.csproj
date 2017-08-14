@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\ReportBuilderContentTests.cs" />
+    <Compile Include="Reports\ReportBuilderFunctionalTests.cs" />
     <Compile Include="Utils\TestReportEntity.cs" />
     <Compile Include="Utils\TestUtils.cs" />
   </ItemGroup>
