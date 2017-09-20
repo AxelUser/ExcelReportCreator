@@ -32,5 +32,17 @@ namespace ExcelReportsCreator.Tests.Utils
 
             return entities;
         }
+
+        public static byte[] CreateReportWithTitleColumn(string reportName, List<TestReportEntity> entities)
+        {
+            return ReportBuilder<TestReportEntity>
+                .Create(reportName)
+                .AddColumn(entity => new ReportColumn()
+                {
+                    Title = "Title",
+                    Value = entity.Title
+                })
+                .Build(entities);
+        }
     }
 }

@@ -11,14 +11,7 @@ namespace ExcelReportsCreator.Tests.Reports
         public void Build_AddColumn_ReturnsBinary()
         {
             var entities = TestUtils.CreateTestReportEntities(10);
-            var binary = ReportBuilder<TestReportEntity>
-                .Create(nameof(Build_AddColumn_ReturnsBinary))
-                .AddColumn(entity => new ReportColumn()
-                {
-                    Title = "Title",
-                    Value = entity.Title
-                })
-                .Build(entities);
+            var binary = TestUtils.CreateReportWithTitleColumn(nameof(Build_AddColumn_ReturnsBinary), entities);
 
             Assert.NotNull(binary);
             Assert.NotEmpty(binary);
@@ -27,14 +20,8 @@ namespace ExcelReportsCreator.Tests.Reports
         [Fact]
         public void Build_PutEmptyCollection_ReturnsNull()
         {
-            var binary = ReportBuilder<TestReportEntity>
-                .Create(nameof(Build_PutEmptyCollection_ReturnsNull))
-                .AddColumn(entity => new ReportColumn()
-                {
-                    Title = "Title",
-                    Value = entity.Title
-                })
-                .Build(new List<TestReportEntity>());
+            var binary = TestUtils.CreateReportWithTitleColumn(nameof(Build_PutEmptyCollection_ReturnsNull), 
+                new List<TestReportEntity>());
 
             Assert.Null(binary);
         }
@@ -42,14 +29,7 @@ namespace ExcelReportsCreator.Tests.Reports
         [Fact]
         public void Build_PutNull_ReturnsNull()
         {
-            var binary = ReportBuilder<TestReportEntity>
-                .Create(nameof(Build_PutEmptyCollection_ReturnsNull))
-                .AddColumn(entity => new ReportColumn()
-                {
-                    Title = "Title",
-                    Value = entity.Title
-                })
-                .Build(null);
+            var binary = TestUtils.CreateReportWithTitleColumn(nameof(Build_PutNull_ReturnsNull), null);
 
             Assert.Null(binary);
         }
@@ -59,7 +39,7 @@ namespace ExcelReportsCreator.Tests.Reports
         public void Build_PutCollection_EqualsCount(int count)
         {
             var entities = TestUtils.CreateTestReportEntities(count);
-
+            var binary = TestUtils.CreateReportWithTitleColumn(nameof(Build_PutCollection_EqualsCount), entities);
             throw new NotImplementedException();
         }
 
