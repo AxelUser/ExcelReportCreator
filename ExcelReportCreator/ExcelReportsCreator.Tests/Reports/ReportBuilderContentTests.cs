@@ -1,6 +1,8 @@
 ﻿using ExcelReportsCreator.Tests.Utils;
-using System;
+using OfficeOpenXml;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace ExcelReportsCreator.Tests.Reports
@@ -38,9 +40,34 @@ namespace ExcelReportsCreator.Tests.Reports
         [InlineData(10)]
         public void Build_PutCollection_EqualsCount(int count)
         {
+            string title;
+            string header;
+            List<string> rowValues = new List<string>();
+
             var entities = TestUtils.CreateTestReportEntities(count);
             var binary = TestUtils.CreateReportWithTitleColumn(nameof(Build_PutCollection_EqualsCount), entities);
-            throw new NotImplementedException();
+
+            Assert.NotNull(binary);
+
+            using (MemoryStream ms = new MemoryStream(binary))
+            {
+                using (ExcelPackage package = new ExcelPackage(ms))
+                {
+                    ExcelWorksheet w = package.Workbook.Worksheets[1];
+                    title = w.GetValue(1, 1).ToString();
+                    header = w.GetValue(3, 1).ToString();
+
+                    
+                    for(int i=4; i < count+4; i++)
+                    {
+                        rowValues.Add(w.GetValue(i, 1).ToString());
+                    }
+                }
+            }
+
+            Assert.Equal(nameof(Build_PutCollection_EqualsCount), title);
+            Assert.Equal(nameof(TestReportEntity.Title), header);
+            Assert.Equal(entities.Select(e => e.Title), rowValues);
         }
 
         [Fact]
