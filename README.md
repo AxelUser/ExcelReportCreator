@@ -1,4 +1,4 @@
-# ExcelReportCreator
+# ExcelReportCreator [![Build Status](https://travis-ci.org/AxelUser/ExcelReportCreator.svg?branch=master)](https://travis-ci.org/AxelUser/ExcelReportCreator)
 Small Library to create Excel-reports from entities.
 
 # Usage example

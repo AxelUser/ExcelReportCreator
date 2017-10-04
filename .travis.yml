@@ -1,0 +1,8 @@
+language: csharp
+solution: ExcelReportCreator/ExcelReportCreator.sln
+install:
+  - nuget restore ExcelReportCreator/ExcelReportCreator.sln
+  - nuget install xunit.runner.console -Version 2.2.0 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release ExcelReportCreator/ExcelReportCreator.sln
+  - mono ./testrunner/xunit.runner.console.2.2.0/tools/xunit.console.exe ExcelReportCreator/ExcelReportsCreator.Tests/bin/Release/ExcelReportsCreator.Tests.dll
